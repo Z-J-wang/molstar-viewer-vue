@@ -1,7 +1,7 @@
 <script setup>
 import 'molstar/build/viewer/molstar.css'
 import { Viewer, setDebugMode, setTimingMode, ExtensionMap } from 'molstar/build/viewer/molstar'
-import { computed, onMounted, watch, onBeforeUnmount, ref } from 'vue'
+import { computed, onMounted, watch, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -48,7 +48,6 @@ const props = defineProps({
 let molStarViewer = null
 
 const format = computed(() => {
-  console.log(props.fileFormat)
   let format
   switch (props.fileFormat?.toLowerCase()) {
     case 'cif':
@@ -96,13 +95,11 @@ watch(
   async (data) => {
     loadData(data, format.value)
   },
-  {
-    deep: true
-  }
+  { deep: true }
 )
 
 const render = async () => {
-  const query = route.query
+  const query = route?.query || {}
   if (query['debug-mode'] === '1' || props.debugMode) setDebugMode(true)
   if (query['timing-mode'] === '1' || props.timingMode) setTimingMode(true)
   const hideControls = query['hide-controls']
@@ -150,15 +147,17 @@ const render = async () => {
       query['snapshot-url-type']?.toLowerCase()?.trim() || props.snapshotUrlType
     if (snapshotUrl && snapshotUrlType) viewer.loadSnapshotFromUrl(snapshotUrl, snapshotUrlType)
 
-    const structureUrl = query['structure-url']?.trim()
-    const structureUrlFormat = query['structure-url-format']?.toLowerCase()?.trim()
-    const structureUrlIsBinary = query['structure-url-is-binary']?.trim() === '1'
+    const structureUrl = query['structure-url']?.trim() || props.structureUrl
+    const structureUrlFormat =
+      query['structure-url-format']?.toLowerCase()?.trim() || props.structureUrlFormat
+    const structureUrlIsBinary =
+      query['structure-url-is-binary']?.trim() === '1' || props.structureUrlIsBinary
     if (structureUrl)
       viewer.loadStructureFromUrl(structureUrl, structureUrlFormat, structureUrlIsBinary)
 
-    const mvsUrl = query['mvs-url']?.trim()
-    const mvsData = query['mvs-data']?.trim()
-    const mvsFormat = query['mvs-format']?.trim() || 'mvsj'
+    const mvsUrl = query['mvs-url']?.trim() || props.mvsUrl
+    const mvsData = query['mvs-data']?.trim() || props.mvsFormat
+    const mvsFormat = query['mvs-format']?.trim() || props.mvsData
     if (mvsUrl && mvsData)
       console.error(
         'Cannot specify mvs-url and mvs-data URL parameters at the same time. Ignoring both.'
@@ -166,19 +165,19 @@ const render = async () => {
     else if (mvsUrl) viewer.loadMvsFromUrl(mvsUrl, mvsFormat)
     else if (mvsData) viewer.loadMvsData(mvsData, mvsFormat)
 
-    const pdb = query['pdb']?.trim()
+    const pdb = query['pdb']?.trim() || props.pdbId
     if (pdb) viewer.loadPdb(pdb)
 
-    const pdbDev = query['pdb-dev']?.trim()
+    const pdbDev = query['pdb-dev']?.trim() || props.pdbDevId
     if (pdbDev) viewer.loadPdbDev(pdbDev)
 
-    const emdb = query['emdb']?.trim()
+    const emdb = query['emdb']?.trim() || props.emdbId
     if (emdb) viewer.loadEmdb(emdb)
 
     const afdb = query['afdb']?.trim()
-    if (afdb) viewer.loadAlphaFoldDb(afdb)
+    if (afdb) viewer.loadAlphaFoldDb(afdb) || props.afdbId
 
-    const modelArchive = query['model-archive']?.trim()
+    const modelArchive = query['model-archive']?.trim() || props.modelArchiveId
     if (modelArchive) viewer.loadModelArchive(modelArchive)
 
     // 加载数据
@@ -188,6 +187,9 @@ const render = async () => {
 
 // eslint-disable-next-line no-unused-vars
 const getExtension = () => Object.keys(ExtensionMap) // 获取所有的molstar扩展
+
+// eslint-disable-next-line no-unused-vars
+const getViewer = () => molStarViewer // 获取molstar viewer实例
 
 onMounted(() => {
   render()

@@ -1,41 +1,121 @@
 # molstar-vue
 
-This template should help get you started developing with Vue 3 in Vite.
+`Molstar Vue`将[Molstar Viewer](https://molstar.org/viewer/)封装为Vue组件，以便于在Vue项目中呈现`molstar`。
 
-## Recommended IDE Setup
+由于molstar基于react开发，所以在Vue项目中无法进行个性化定制。故而`Molstar Vue`并为对`molstar`做额外的调整。
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## 采用的技术架构
 
-## Customize configuration
+- `molstar`：`v4.0.1`
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- `Vue`：`v3.4.15`
 
-## Project Setup
+## 运行项目
 
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
+### 安装依赖
 
 ```sh
-npm run dev
+yarn
 ```
 
-### Compile and Minify for Production
+### 本地开发
 
 ```sh
-npm run build
+yarn dev
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### 编译打包
 
 ```sh
-npm run test:unit
+yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## MolstarViewer组件介绍
 
-```sh
-npm run lint
-```
+### Props
+
+#### 渲染数据相关
+
+| Prop                   | 类型            | 默认值  | 描述                                                             |
+| ---------------------- | --------------- | ------- | ---------------------------------------------------------------- |
+| `fileData`             | `String、Array` | `-`     | 可视化文件数据。需搭配`fileFormat`一起使用。                     |
+| `fileFormat`           | `String`        | `-`     | 可视化文件的文件类型。需搭配`fileData`一起使用。                 |
+| `snapshotId`           | `String`        | `-`     | Snap Shot可视化ID                                                |
+| `snapshotUrl`          | `String`        | `-`     | Snap Shot可视化文件地址                                          |
+| `snapshotUrlType`      | `String`        | `molj`  | Snap Shot可视化文件类型。可选择为：`json`、`molj`、`zip`、`molx` |
+| `structureUrl`         | `String`        | `-`     | Structure可视化文件地址                                          |
+| `structureUrlFormat`   | `String`        | `-`     | Structure可视化文件类型。                                        |
+| `structureUrlIsBinary` | `Boolean`       | `false` | Structure可视化文件是否是二进制                                  |
+| `mvsUrl`               | `String`        | `-`     | mvs可视化文件地址                                                |
+| `mvsFormat`            | `String`        | `mvsj`  | mvs可视化文件类型。可选择为：`mvsj`、`mvsx`                      |
+| `mvsData`              | `String`        | `-`     | mvs数据源                                                        |
+| `pdbId`                | `String`        | `-`     | pdb 的 ID                                                        |
+| `pdbDevId`             | `String`        | `-`     | pdbDev 的 ID                                                     |
+| `emdbId`               | `String`        | `-`     | EMDB 的 ID                                                       |
+| `afdbId`               | `String`        | `-`     | AlphaFold DB 的 ID                                               |
+| `modelArchiveId`       | `String`        | `-`     | ModelArchive ID                                                  |
+
+#### molstar viewer 配置项
+
+| Prop                          | 类型      | 默认值               | 描述                                                                        |
+| ----------------------------- | --------- | -------------------- | --------------------------------------------------------------------------- |
+| `debugMode`                   | `Boolean` | `false`              | 配置项。开启debug模式。                                                     |
+| `timingMode`                  | `Boolean` | `false`              | 配置项。开启timing模式。                                                    |
+| `disabledExtensions`          | `Array`   | `[]`                 | 配置项。禁用指定molstar扩展项。                                             |
+| `hideControls`                | `Boolean` | `false`              | 配置项。隐藏四周控制栏。                                                    |
+| `collapseLeftPanel`           | `Boolean` | `false`              | 配置项。收起左侧控制栏。                                                    |
+| `pdbProvider`                 | `String`  | `pdbe`               | 配置项。pdb数据源。默认`pdbe`（Protein Data Bank in Europe）。              |
+| `emdbProvider`                | `String`  | `pdbe`               | 配置项。emdb数据源。默认`pdbe`（Protein Data Bank in Europe）。             |
+| `mapProvider`                 | `String`  | `pdbe`               | 配置项。map数据源。默认`pdbe`（Protein Data Bank in Europe）。              |
+| `pixelScale`                  | `Number`  | `1`                  | 配置项。像素比例。值越大清晰的越高，消耗的性能越大。采用默认值即可。        |
+| `pickScale`                   | `Number`  | `0.25`               | 配置项。                                                                    |
+| `pickPadding`                 | `Number`  | `1`                  | 配置项。                                                                    |
+| `transparency`                | `String`  | `-`                  | 配置项。透明模式。可选值：`blended`、`wboit`、`dpoit`。                     |
+| `preferWebgl1`                | `Boolean` | `-`                  | 配置项。是否启用WebGL 1。默认根据设备自动开启关闭。                         |
+| `allowMajorPerformanceCaveat` | `Boolean` | `false`              | 配置项。是否允许在WebGL的上下文中接受某些可能会显著降低性能的配置或行为。   |
+| `powerPreference`             | `String`  | `'high-performance'` | 配置项。WebGL性能模式。可选择：`default`、`high-performance`、`low-power`。 |
+
+### Methods
+
+| Method         | 参数 | 描述                      |
+| -------------- | ---- | ------------------------- |
+| `getExtension` | --   | 获取`MolstarViewer`扩展项 |
+| `getViewer`    | --   | 获取`MolstarViewer`实例   |
+|                |      |                           |
+
+### 支持的文件类型
+
+#### Structure
+
+- MMCIF and CIFCORE (mmCIF and coreCIF schemas): cif, bcif, mmcif, mcif
+- GRO: gro
+- MOL: mol
+- MOL2: mol2
+- PDB/PDBQT: pdb, ent, pdbqt
+- SDF: sdf, sd
+- XYZ: xyz
+
+#### Topology
+
+Need to be loaded together with Coordinates.
+
+- PRMTOP: prmtop, parm7
+- PSF: psf
+- TOP: top
+
+#### Coordinates
+
+Need to be loaded together with a Structure or Topology.
+
+- DCD: dcd
+- NCTRAJ: nc, nctraj
+- TRR: trr
+- XTC: xtc
+
+#### Volume
+
+- CCP4/MRC/MAP: ccp4, mrc, map
+- CUBE (may include a Structure): cub, cube
+- DSN6/BRIX: dsn6, brix
+- DX and DXBIN: dx, dxbin
+- DSCIF (DensityServer CIF schema): cif, bcif
