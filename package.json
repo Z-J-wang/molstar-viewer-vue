@@ -1,8 +1,17 @@
 {
   "name": "molstar-vue",
   "version": "1.0.0",
-  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/Z-J-wang/molstar-vue#readme",
+  "repository": "https://github.com/Z-J-wang/molstar-vue",
+  "author": "wangzhijie <1356573671@qq.com>",
+  "description": "Molstar Vue将[Molstar Viewer](https://molstar.org/viewer/)封装为Vue组件，以便于在Vue项目中呈现molstar。",
   "type": "module",
+  "keywords": [
+    "molstar",
+    "vue"
+  ],
+  "main": "./lib/MolStarViewer.vue",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

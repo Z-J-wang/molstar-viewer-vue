@@ -1,7 +1,7 @@
 <script setup>
 import { fetchText } from '../utils'
 import { onMounted, ref } from 'vue'
-import MolStarViewer from '../components/MolStarViewer.vue'
+import MolStarViewer from '../../lib/MolStarViewer.vue'
 
 const fileData = ref('')
 const fileFormat = ref('')
