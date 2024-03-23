@@ -20,6 +20,10 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },
+  "peerDependencies": {
+    "molstar": "^4.0.1",
+    "vue": "^3.4.15"
+  },
   "dependencies": {
     "molstar": "^4.0.1",
     "vue": "^3.4.15",

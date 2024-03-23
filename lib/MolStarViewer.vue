@@ -9,6 +9,7 @@ const route = useRoute()
 const props = defineProps({
   fileData: { type: [String, Array], default: '' }, // 加载文件数据
   fileFormat: { type: String, default: '' }, // 加载文件类型
+  fileDataLabel: { type: String, default: '' }, // 加载文件标签
 
   snapshotId: { type: String, default: '' },
   snapshotUrl: { type: String, default: '' },
@@ -86,14 +87,14 @@ const format = computed(() => {
   return format
 })
 
-const loadData = async (data, format) => {
-  molStarViewer.loadStructureFromData(data, format)
+const loadData = async (data, format, dataLabel) => {
+  molStarViewer.loadStructureFromData(data, format, { dataLabel })
 }
 
 watch(
   () => props.fileData,
   async (data) => {
-    loadData(data, format.value)
+    loadData(data, format.value, props.fileDataLabel)
   },
   { deep: true }
 )
@@ -181,7 +182,7 @@ const render = async () => {
     if (modelArchive) viewer.loadModelArchive(modelArchive)
 
     // 加载数据
-    if (props.fileData && format.value) loadData(props.fileData, format.value)
+    if (props.fileData && format.value) loadData(props.fileData, format.value, props.fileDataLabel)
   })
 }
 

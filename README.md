@@ -1,8 +1,6 @@
-# molstar-vue
+# molstar-viewer-vue
 
-`Molstar Vue`将[Molstar Viewer](https://molstar.org/viewer/)封装为Vue组件，以便于在Vue项目中呈现`molstar`。
-
-由于molstar基于react开发，所以在Vue项目中无法进行个性化定制。故而`Molstar Vue`并为对`molstar`做额外的调整。
+`molstar-viewer-vue`将[Molstar Viewer](https://molstar.org/viewer/)封装为Vue组件，以便于在Vue项目中呈现`molstar`。
 
 ## 采用的技术架构
 
@@ -36,24 +34,25 @@ yarn build
 
 #### 渲染数据相关
 
-| Prop                   | 类型            | 默认值  | 描述                                                             |
-| ---------------------- | --------------- | ------- | ---------------------------------------------------------------- |
-| `fileData`             | `String、Array` | `-`     | 可视化文件数据。需搭配`fileFormat`一起使用。                     |
-| `fileFormat`           | `String`        | `-`     | 可视化文件的文件类型。需搭配`fileData`一起使用。                 |
-| `snapshotId`           | `String`        | `-`     | Snap Shot可视化ID                                                |
-| `snapshotUrl`          | `String`        | `-`     | Snap Shot可视化文件地址                                          |
+| Prop                   | 类型            | 默认值  | 描述                                                         |
+| ---------------------- | --------------- | ------- | ------------------------------------------------------------ |
+| `fileData`             | `String、Array` | `-`     | 可视化文件数据。需搭配`fileFormat`、`fileDataLabel`一起使用。 |
+| `fileFormat`           | `String`        | `-`     | 可视化文件的文件类型。需搭配`fileData`、`fileDataLabel`一起使用。 |
+| `fileDataLabel`        | `String`        | `''`    | 可视化文件的标签。用于充当`State Tree`的根节点名称。需搭配`fileFormat`、`fileFormat`一起使用。 |
+| `snapshotId`           | `String`        | `-`     | Snap Shot可视化ID                                            |
+| `snapshotUrl`          | `String`        | `-`     | Snap Shot可视化文件地址                                      |
 | `snapshotUrlType`      | `String`        | `molj`  | Snap Shot可视化文件类型。可选择为：`json`、`molj`、`zip`、`molx` |
-| `structureUrl`         | `String`        | `-`     | Structure可视化文件地址                                          |
-| `structureUrlFormat`   | `String`        | `-`     | Structure可视化文件类型。                                        |
-| `structureUrlIsBinary` | `Boolean`       | `false` | Structure可视化文件是否是二进制                                  |
-| `mvsUrl`               | `String`        | `-`     | mvs可视化文件地址                                                |
-| `mvsFormat`            | `String`        | `mvsj`  | mvs可视化文件类型。可选择为：`mvsj`、`mvsx`                      |
-| `mvsData`              | `String`        | `-`     | mvs数据源                                                        |
-| `pdbId`                | `String`        | `-`     | pdb 的 ID                                                        |
-| `pdbDevId`             | `String`        | `-`     | pdbDev 的 ID                                                     |
-| `emdbId`               | `String`        | `-`     | EMDB 的 ID                                                       |
-| `afdbId`               | `String`        | `-`     | AlphaFold DB 的 ID                                               |
-| `modelArchiveId`       | `String`        | `-`     | ModelArchive ID                                                  |
+| `structureUrl`         | `String`        | `-`     | Structure可视化文件地址                                      |
+| `structureUrlFormat`   | `String`        | `-`     | Structure可视化文件类型。                                    |
+| `structureUrlIsBinary` | `Boolean`       | `false` | Structure可视化文件是否是二进制                              |
+| `mvsUrl`               | `String`        | `-`     | mvs可视化文件地址                                            |
+| `mvsFormat`            | `String`        | `mvsj`  | mvs可视化文件类型。可选择为：`mvsj`、`mvsx`                  |
+| `mvsData`              | `String`        | `-`     | mvs数据源                                                    |
+| `pdbId`                | `String`        | `-`     | pdb 的 ID                                                    |
+| `pdbDevId`             | `String`        | `-`     | pdbDev 的 ID                                                 |
+| `emdbId`               | `String`        | `-`     | EMDB 的 ID                                                   |
+| `afdbId`               | `String`        | `-`     | AlphaFold DB 的 ID                                           |
+| `modelArchiveId`       | `String`        | `-`     | ModelArchive ID                                              |
 
 #### molstar viewer 配置项
 
@@ -81,7 +80,6 @@ yarn build
 | -------------- | ---- | ------------------------- |
 | `getExtension` | --   | 获取`MolstarViewer`扩展项 |
 | `getViewer`    | --   | 获取`MolstarViewer`实例   |
-|                |      |                           |
 
 ### 支持的文件类型
 
@@ -119,3 +117,19 @@ Need to be loaded together with a Structure or Topology.
 - DSN6/BRIX: dsn6, brix
 - DX and DXBIN: dx, dxbin
 - DSCIF (DensityServer CIF schema): cif, bcif
+
+> 关于PLY文件：由于[Molstar Viewer](https://molstar.org/viewer/)暂未支持通过传参的形式渲染PLY文件。故而本组件也不支持。
+
+### 使用说明
+
+首先安装molstar-vue插件：
+
+```bash
+yarn add molstar-vue
+```
+
+然后在项目中引入**MolstarViewer组件**：
+
+```js
+import MolStarViewer from 'molstar-vue'
+```
