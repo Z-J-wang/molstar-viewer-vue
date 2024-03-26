@@ -46,4 +46,4 @@ jobs:
           yarn publish
           echo "发布成功"
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.MOLSTAR_VUE_TOKEN }}
