@@ -134,10 +134,10 @@ yarn add molstar-vue
 import MolStarViewer from 'molstar-vue'
 ```
 
-# Author
+## Author
 
 - Z-J-wang <https://github.com/Z-J-wang>
 
-# LICENSE
+## LICENSE
 
 [MIT](https://opensource.org/licenses/MIT)
