@@ -30,22 +30,6 @@ jobs:
             exit 1
           fi
 
-  lint-test:
-    needs: pre
-    if: needs.pre.outputs.allow == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: yarn
-
-      - name: Install
-        run: yarn
-      - name: lint
-        run: yarn lint
-
   publish:
     needs: lint-test
     runs-on: ubuntu-latest
