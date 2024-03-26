@@ -12,6 +12,10 @@
     "vue"
   ],
   "main": "./lib/MolStarViewer.vue",
+  "files": [
+    "lib/",
+    "src/"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",

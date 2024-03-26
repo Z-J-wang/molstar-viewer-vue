@@ -34,25 +34,25 @@ yarn build
 
 #### 渲染数据相关
 
-| Prop                   | 类型            | 默认值  | 描述                                                         |
-| ---------------------- | --------------- | ------- | ------------------------------------------------------------ |
-| `fileData`             | `String、Array` | `-`     | 可视化文件数据。需搭配`fileFormat`、`fileDataLabel`一起使用。 |
-| `fileFormat`           | `String`        | `-`     | 可视化文件的文件类型。需搭配`fileData`、`fileDataLabel`一起使用。 |
+| Prop                   | 类型            | 默认值  | 描述                                                                                           |
+| ---------------------- | --------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `fileData`             | `String、Array` | `-`     | 可视化文件数据。需搭配`fileFormat`、`fileDataLabel`一起使用。                                  |
+| `fileFormat`           | `String`        | `-`     | 可视化文件的文件类型。需搭配`fileData`、`fileDataLabel`一起使用。                              |
 | `fileDataLabel`        | `String`        | `''`    | 可视化文件的标签。用于充当`State Tree`的根节点名称。需搭配`fileFormat`、`fileFormat`一起使用。 |
-| `snapshotId`           | `String`        | `-`     | Snap Shot可视化ID                                            |
-| `snapshotUrl`          | `String`        | `-`     | Snap Shot可视化文件地址                                      |
-| `snapshotUrlType`      | `String`        | `molj`  | Snap Shot可视化文件类型。可选择为：`json`、`molj`、`zip`、`molx` |
-| `structureUrl`         | `String`        | `-`     | Structure可视化文件地址                                      |
-| `structureUrlFormat`   | `String`        | `-`     | Structure可视化文件类型。                                    |
-| `structureUrlIsBinary` | `Boolean`       | `false` | Structure可视化文件是否是二进制                              |
-| `mvsUrl`               | `String`        | `-`     | mvs可视化文件地址                                            |
-| `mvsFormat`            | `String`        | `mvsj`  | mvs可视化文件类型。可选择为：`mvsj`、`mvsx`                  |
-| `mvsData`              | `String`        | `-`     | mvs数据源                                                    |
-| `pdbId`                | `String`        | `-`     | pdb 的 ID                                                    |
-| `pdbDevId`             | `String`        | `-`     | pdbDev 的 ID                                                 |
-| `emdbId`               | `String`        | `-`     | EMDB 的 ID                                                   |
-| `afdbId`               | `String`        | `-`     | AlphaFold DB 的 ID                                           |
-| `modelArchiveId`       | `String`        | `-`     | ModelArchive ID                                              |
+| `snapshotId`           | `String`        | `-`     | Snap Shot可视化ID                                                                              |
+| `snapshotUrl`          | `String`        | `-`     | Snap Shot可视化文件地址                                                                        |
+| `snapshotUrlType`      | `String`        | `molj`  | Snap Shot可视化文件类型。可选择为：`json`、`molj`、`zip`、`molx`                               |
+| `structureUrl`         | `String`        | `-`     | Structure可视化文件地址                                                                        |
+| `structureUrlFormat`   | `String`        | `-`     | Structure可视化文件类型。                                                                      |
+| `structureUrlIsBinary` | `Boolean`       | `false` | Structure可视化文件是否是二进制                                                                |
+| `mvsUrl`               | `String`        | `-`     | mvs可视化文件地址                                                                              |
+| `mvsFormat`            | `String`        | `mvsj`  | mvs可视化文件类型。可选择为：`mvsj`、`mvsx`                                                    |
+| `mvsData`              | `String`        | `-`     | mvs数据源                                                                                      |
+| `pdbId`                | `String`        | `-`     | pdb 的 ID                                                                                      |
+| `pdbDevId`             | `String`        | `-`     | pdbDev 的 ID                                                                                   |
+| `emdbId`               | `String`        | `-`     | EMDB 的 ID                                                                                     |
+| `afdbId`               | `String`        | `-`     | AlphaFold DB 的 ID                                                                             |
+| `modelArchiveId`       | `String`        | `-`     | ModelArchive ID                                                                                |
 
 #### molstar viewer 配置项
 
@@ -133,3 +133,11 @@ yarn add molstar-vue
 ```js
 import MolStarViewer from 'molstar-vue'
 ```
+
+# Author
+
+- Z-J-wang <https://github.com/Z-J-wang>
+
+# LICENSE
+
+[MIT](https://opensource.org/licenses/MIT)
