@@ -16,6 +16,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <MolStarViewer :fileData="fileData" :fileFormat="fileFormat" />
+    <MolStarViewer :fileData="fileData" :fileFormat="fileFormat" :fileDataLabel="'rcsb_2da0.pdb'" />
   </div>
 </template>

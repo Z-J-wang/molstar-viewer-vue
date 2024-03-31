@@ -1,7 +1,7 @@
 <script setup>
 import 'molstar/build/viewer/molstar.css'
 import { Viewer, setDebugMode, setTimingMode, ExtensionMap } from 'molstar/build/viewer/molstar'
-import { computed, onMounted, watch, onBeforeUnmount } from 'vue'
+import { onMounted, watch, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -15,7 +15,7 @@ const props = defineProps({
   snapshotUrl: { type: String, default: '' },
   snapshotUrlType: { type: String, default: 'molj' },
 
-  structureUrl: { type: String, default: '' },
+  structureUrl: { type: [String, Array], default: '' },
   structureUrlFormat: { type: String, default: '' },
   structureUrlIsBinary: { type: Boolean, default: false },
 
@@ -23,11 +23,11 @@ const props = defineProps({
   mvsFormat: { type: String, default: 'mvsj' },
   mvsData: { type: String, default: '' },
 
-  pdbId: { type: String, default: '' },
-  pdbDevId: { type: String, default: '' },
-  emdbId: { type: String, default: '' },
-  afdbId: { type: String, default: '' },
-  modelArchiveId: { type: String, default: '' },
+  pdb: { type: String, default: '' },
+  pdbDev: { type: String, default: '' },
+  emdb: { type: String, default: '' },
+  afdb: { type: String, default: '' },
+  modelArchive: { type: String, default: '' },
 
   debugMode: { type: Boolean, default: false },
   timingMode: { type: Boolean, default: false },
@@ -48,9 +48,13 @@ const props = defineProps({
 
 let molStarViewer = null
 
-const format = computed(() => {
+/**
+ * 根据文件类型转化为对应的molstar格式
+ * @param {*} fileFormat
+ */
+const exchangeFileFormatToMolstarFormat = (fileFormat) => {
   let format
-  switch (props.fileFormat?.toLowerCase()) {
+  switch (fileFormat.toLowerCase()) {
     case 'cif':
     case 'bcif':
     case 'mmcif':
@@ -85,7 +89,7 @@ const format = computed(() => {
   }
 
   return format
-})
+}
 
 const loadData = async (data, format, dataLabel) => {
   molStarViewer.loadStructureFromData(data, format, { dataLabel })
@@ -94,7 +98,7 @@ const loadData = async (data, format, dataLabel) => {
 watch(
   () => props.fileData,
   async (data) => {
-    loadData(data, format.value, props.fileDataLabel)
+    loadData(data, exchangeFileFormatToMolstarFormat(props.fileFormat), props.fileDataLabel)
   },
   { deep: true }
 )
@@ -148,17 +152,34 @@ const render = async () => {
       query['snapshot-url-type']?.toLowerCase()?.trim() || props.snapshotUrlType
     if (snapshotUrl && snapshotUrlType) viewer.loadSnapshotFromUrl(snapshotUrl, snapshotUrlType)
 
-    const structureUrl = query['structure-url']?.trim() || props.structureUrl
-    const structureUrlFormat =
-      query['structure-url-format']?.toLowerCase()?.trim() || props.structureUrlFormat
+    const structureUrl = query['structure-url'] || props.structureUrl
+
     const structureUrlIsBinary =
       query['structure-url-is-binary']?.trim() === '1' || props.structureUrlIsBinary
-    if (structureUrl)
-      viewer.loadStructureFromUrl(structureUrl, structureUrlFormat, structureUrlIsBinary)
-
+    if (Array.isArray(structureUrl)) {
+      structureUrl.forEach((url) => {
+        let format = url.split('.').pop()
+        viewer.loadStructureFromUrl(
+          url.trim(),
+          exchangeFileFormatToMolstarFormat(format),
+          structureUrlIsBinary,
+          {
+            label: url.split('/').pop()
+          }
+        )
+      })
+    } else if (structureUrl) {
+      const structureUrlFormat =
+        query['structure-url-format']?.toLowerCase()?.trim() ||
+        props.structureUrlFormat ||
+        exchangeFileFormatToMolstarFormat(structureUrl.split('.').pop())
+      viewer.loadStructureFromUrl(structureUrl?.trim(), structureUrlFormat, structureUrlIsBinary, {
+        label: structureUrl.split('/').pop()
+      })
+    }
     const mvsUrl = query['mvs-url']?.trim() || props.mvsUrl
-    const mvsData = query['mvs-data']?.trim() || props.mvsFormat
-    const mvsFormat = query['mvs-format']?.trim() || props.mvsData
+    const mvsData = query['mvs-data']?.trim() || props.mvsData
+    const mvsFormat = query['mvs-format']?.trim() || props.mvsFormat
     if (mvsUrl && mvsData)
       console.error(
         'Cannot specify mvs-url and mvs-data URL parameters at the same time. Ignoring both.'
@@ -166,23 +187,27 @@ const render = async () => {
     else if (mvsUrl) viewer.loadMvsFromUrl(mvsUrl, mvsFormat)
     else if (mvsData) viewer.loadMvsData(mvsData, mvsFormat)
 
-    const pdb = query['pdb']?.trim() || props.pdbId
+    const pdb = query['pdb']?.trim() || props.pdb
     if (pdb) viewer.loadPdb(pdb)
 
-    const pdbDev = query['pdb-dev']?.trim() || props.pdbDevId
+    const pdbDev = query['pdb-dev']?.trim() || props.pdbDev
     if (pdbDev) viewer.loadPdbDev(pdbDev)
 
-    const emdb = query['emdb']?.trim() || props.emdbId
+    const emdb = query['emdb']?.trim() || props.emdb
     if (emdb) viewer.loadEmdb(emdb)
 
     const afdb = query['afdb']?.trim()
-    if (afdb) viewer.loadAlphaFoldDb(afdb) || props.afdbId
+    if (afdb) viewer.loadAlphaFoldDb(afdb) || props.afdb
 
-    const modelArchive = query['model-archive']?.trim() || props.modelArchiveId
+    const modelArchive = query['model-archive']?.trim() || props.modelArchive
     if (modelArchive) viewer.loadModelArchive(modelArchive)
-
     // 加载数据
-    if (props.fileData && format.value) loadData(props.fileData, format.value, props.fileDataLabel)
+    if (props.fileData && props.fileFormat)
+      loadData(
+        props.fileData,
+        exchangeFileFormatToMolstarFormat(props.fileFormat),
+        props.fileDataLabel
+      )
   })
 }
 
