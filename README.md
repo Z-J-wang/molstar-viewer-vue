@@ -127,13 +127,13 @@ Need to be loaded together with a Structure or Topology.
 首先安装molstar-vue插件：
 
 ```bash
-yarn add molstar-vue
+yarn add molstar-viewer-vue
 ```
 
 然后在项目中引入**MolstarViewer组件**：
 
 ```js
-import MolStarViewer from 'molstar-vue'
+import MolStarViewer from 'molstar-viewer-vue'
 ```
 
 ## Author
