@@ -8,26 +8,6 @@
 
 - `Vue`：`v3.4.15`
 
-## 运行项目
-
-### 安装依赖
-
-```sh
-yarn
-```
-
-### 本地开发
-
-```sh
-yarn dev
-```
-
-### 编译打包
-
-```sh
-yarn build
-```
-
 ## MolstarViewer组件介绍
 
 ### Props
